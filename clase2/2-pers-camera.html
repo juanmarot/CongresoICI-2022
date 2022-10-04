@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PerspectiveCamera Three.js</title>
+    </head>
+    <body>
+        <!--
+            Cámara de Perspectiva
+
+            FOV: Field Of View
+            Aspect: ancho/altura
+            Near: Cámara - Punto más cercano
+            Far: Cámara - Punto más lejano
+        -->
+
+        <script src="../src/js/three.js"></script>
+
+        <script>
+
+            //creating scene
+            var scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0d1e28);
+            
+            //add camera
+            var camera = new THREE.PerspectiveCamera(
+                75,
+                window.innerWidth/window.innerHeight,
+                0.1,
+                2000
+            );
+
+            //add new camera
+            var newcamera = new THREE.PerspectiveCamera(
+                75,
+                window.innerWidth/window.innerHeight,
+                3,
+                100
+            );
+
+            //This helps with visualizing what a camera contains in its frustum.
+            //It visualizes the frustum of a camera using a LineSegments.
+            //Frustum: porción resultante de un sólido
+            var helper = new THREE.CameraHelper(newcamera);
+            scene.add(helper);
+
+            //renderer
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth,window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            var geometry = new THREE.BoxGeometry();
+            var material = new THREE.MeshBasicMaterial({
+                color: 0xfbb845,
+                //wireframe: true
+            });
+            var cube = new THREE.Mesh(geometry, material);
+            cube.position.z = -5;
+
+            scene.add(cube);
+
+
+            var i = 0;
+            var animate = function(){
+                requestAnimationFrame(animate);
+
+                camera.lookAt(newcamera.position);
+                
+                camera.position.x = Math.cos(i) * 30;
+                camera.position.z = Math.sin(i) * 30;
+
+                i += 0.01;
+
+                cube.rotation.x += 0.01;
+                cube.rotation.y += 0.01;
+
+                renderer.render(scene, camera);
+
+            }
+
+            animate();
+        </script>
+    </body>
+</html>

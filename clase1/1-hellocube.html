@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Hello Cube!</title>
+    </head>
+    <body>
+        <!--<script src="../src/js/three.js"></script>-->
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.145.0/three.min.js"></script>
+
+        <script>
+
+            //creating scene
+            var scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0d1e28);
+            scene.fog = new THREE.Fog(0xBD98C9, 0.1, 8);
+
+            //add camera
+            var camera = new THREE.PerspectiveCamera(
+                75,
+                window.innerWidth/window.innerHeight
+            );
+
+            //renderer
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth,window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            var geometry = new THREE.BoxGeometry();
+            var material = new THREE.MeshBasicMaterial({color: 0xfbb845, wireframe: true});
+            var cube = new THREE.Mesh(geometry, material);
+
+            scene.add(cube);
+
+            camera.position.z = 5;
+
+            renderer.render(scene,camera);
+
+            var animate = function(){
+                requestAnimationFrame(animate);
+                
+                cube.rotation.x += 0.01;
+                cube.rotation.y += 0.01;
+
+                renderer.render(scene, camera);
+
+            }
+
+            animate();
+        </script>
+    </body>
+</html>
